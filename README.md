@@ -7,7 +7,7 @@ It reports on the number of students with each registration status (Registered, 
 By default it will report the number of students on each programme, including all Registered Statuses for anyone on Block 1 in the current academic year.
 
 
-It takes one required argument '-i INPUT', the name of the `.csv` file output by SIMS.
+It takes one required argument `-i INPUT`, the name of the `.csv` file output by SIMS.
 
 
 ```
