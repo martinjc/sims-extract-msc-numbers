@@ -94,42 +94,6 @@ def print_no_breakdown_only_registered(grouped_data):
         print('%s (all): %d' % (prog_name, total))
         print('-----------------------------------------------------')
 
-def print_registered_status_count(all_data):
-    registered_students = filter_students_by_status(all_data, 'Registered')
-    print('Registered Students: %s' % registered_students['Student Code'].count())
-    registered_students = filter_students_by_status(all_data, 'Registered - Not Collected ID Card')
-    print('Registered - Not Collected ID Card Students: %s' % registered_students['Student Code'].count())
-    registered_students = filter_students_by_status(all_data, 'Pending Registration New Entrant')
-    print('Pending Registration New Entrant Students: %s' % registered_students['Student Code'].count())
-
-
-def count_by_programme(all_data):
-
-    PROG_COLUMN = 'Course'
-    return all_data[PROG_COLUMN].value_counts()
-
-
-def print_programme_counts(programme_counts):
-    print('Code\t | Title & Count')
-    for p in programme_counts.axes[0]:
-        print('%s | %s: %d' % (p, prog_codes_2_prog_name_long[p], programme_counts[p]))
-
-
-def print_programme_counts_with_title(programme_counts):
-    count_data = {}
-
-    for p_name, p_codes in prog_name_short_2_prog_codes.items():
-        print('-----------------------------------------------------')
-        count = 0
-        for p_code in p_codes:
-            count += programme_counts.get(p_code, 0)
-        print('| %s (all): %d' % (p_name, count))
-        print('-----------------------------------------------------')
-        for p_code in p_codes:
-            name = prog_codes_2_prog_name_long[p_code]
-            count = programme_counts.get(p_code, 0)
-            print(' %s: %d' % (prog_codes_2_prog_name_long[p_code], programme_counts.get(p_code, 0)))
-
 
 def main():
 
