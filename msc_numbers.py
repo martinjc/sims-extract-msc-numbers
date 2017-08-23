@@ -98,6 +98,21 @@ def print_no_breakdown_only_registered(grouped_data):
         print('-----------------------------------------------------')
 
 
+def output_csvs(all_data):
+    grouped = all_data.groupby('Course')[' Reg Status'].value_counts()
+
+    csv_data = grouped.unstack(fill_value=0)
+    breakdown_data = csv_data.rename(prog_codes_2_prog_name_long)
+
+    with open('enrolled_student_status_per_programme_breakdown.csv', 'w') as output_file:
+        breakdown_data.to_csv(output_file)
+
+    no_breakdown_data = csv_data.groupby(prog_codes_2_prog_name_short).sum()
+
+    with open('enrolled_student_status_per_programme.csv', 'w') as output_file:
+        no_breakdown_data.to_csv(output_file)
+
+
 def create_breakdown_graphic(grouped_data):
     import matplotlib as mpl
     import matplotlib.pyplot as plt
@@ -184,6 +199,7 @@ def main():
     parser.add_argument('-b', '--breakdown', help='Breakdown by part/time & placement programme', action='store_true')
     parser.add_argument('-r', '--registered', help='show fully registered students only', action='store_true')
     parser.add_argument('-g', '--graphics', help='create visualisations of the data', action='store_true')
+    parser.add_argument('-c', '--csv', help='output csv of enrolled status per programme', action='store_true')
     args = parser.parse_args()
 
     # open and read the input file
@@ -209,6 +225,9 @@ def main():
             create_breakdown_graphic(grouped)
         elif args.graphics and not args.breakdown:
             create_no_breakdown_graphic(grouped)
+
+        if args.csv:
+            output_csvs(filtered_data)
 
 if __name__ == '__main__':
     main()
