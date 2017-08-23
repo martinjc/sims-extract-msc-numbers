@@ -95,6 +95,84 @@ def print_no_breakdown_only_registered(grouped_data):
         print('-----------------------------------------------------')
 
 
+def create_breakdown_graphic(grouped_data):
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+
+    mpl.rcdefaults()
+    mpl.rcParams['font.size'] = 16
+    mpl.rcParams['figure.figsize'] = (14,10)
+    mpl.rcParams['axes.grid'] = True
+
+    index = list(range(len(prog_codes)))
+
+    data = {}
+    for status in statuses:
+        data[status] = []
+        for prog_code in prog_codes:
+            if prog_code in grouped_data.index:
+                if status in grouped_data.loc[prog_code]:
+                    data[status].append(grouped_data.loc[prog_code][status])
+                else:
+                    data[status].append(0)
+            else:
+                data[status].append(0)
+
+    fig, ax = plt.subplots()
+    bottom = [0]*len(prog_codes)
+
+    for i, status in enumerate(statuses):
+        ax.bar(index, data[status], label=status, bottom=bottom)
+        bottom = [sum(v) for v in zip(bottom, data[status])]
+
+    ax.set_xticks(list(range(len(prog_codes))))
+    ax.set_xticklabels([prog_codes_2_prog_name_long[p] for p in prog_codes], rotation=90)
+    ax.set_ylim(top=30)
+    ax.legend(loc='upper left', bbox_to_anchor=(0.1, 1.0), framealpha=0.5)
+
+    plt.savefig('enrolled_student_status_per_programme_breakdown.png', bbox_inches='tight')
+
+
+def create_no_breakdown_graphic(grouped_data):
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+
+    mpl.rcdefaults()
+    mpl.rcParams['font.size'] = 16
+    mpl.rcParams['figure.figsize'] = (14,10)
+    mpl.rcParams['axes.grid'] = True
+
+    index = list(range(len(prog_names_short)))
+
+    data = {}
+    for status in statuses:
+
+        data[status] = []
+
+        for prog_name in prog_names_short:
+            prog_codes = prog_name_short_2_prog_codes[prog_name]
+            total = 0
+            for prog_code in prog_codes:
+                if prog_code in grouped_data.index:
+                    if status in grouped_data.loc[prog_code]:
+                        total += grouped_data.loc[prog_code][status]
+            data[status].append(total)
+
+    fig, ax = plt.subplots()
+    bottom = [0]*len(prog_names_short)
+
+    for i, status in enumerate(statuses):
+        ax.bar(index, data[status], label=status, bottom=bottom)
+        bottom = [sum(v) for v in zip(bottom, data[status])]
+
+    ax.set_xticks(list(range(len(prog_names_short))))
+    ax.set_xticklabels(prog_names_short, rotation=90)
+    ax.set_ylim(top=50)
+    ax.legend(loc='upper left', bbox_to_anchor=(0.2, 1.0), framealpha=0.5)
+
+    plt.savefig('enrolled_student_status_per_programme.png', bbox_inches='tight')
+
+
 def main():
 
     # read in filename as command line argument
@@ -102,6 +180,7 @@ def main():
     parser.add_argument('-i', '--input', help='Input file to be analysed', required=True, action='store')
     parser.add_argument('-b', '--breakdown', help='Breakdown by part/time & placement programme', action='store_true')
     parser.add_argument('-r', '--registered', help='show fully registered students only', action='store_true')
+    parser.add_argument('-g', '--graphics', help='create visualisations of the data', action='store_true')
     args = parser.parse_args()
 
     # open and read the input file
@@ -123,6 +202,10 @@ def main():
         elif not args.breakdown and args.registered:
             print_no_breakdown_only_registered(grouped)
 
+        if args.graphics and args.breakdown:
+            create_breakdown_graphic(grouped)
+        elif args.graphics and not args.breakdown:
+            create_no_breakdown_graphic(grouped)
 
 if __name__ == '__main__':
     main()
