@@ -1,6 +1,33 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+prog_codes = [
+    'PFMSCMPA',
+    'PFMSCMPB',
+    'PPMSCMPA',
+    'PFMSCITA',
+    'PFMSCITB',
+    'PPMSCITA',
+    'PFMSADSA',
+    'PFMSADSB',
+    'PPMSADSA',
+    'PFMSISPA',
+    'PPMSISPA',
+    'PFMSCOJA',
+    'PFMSCDJA',
+    'PFMSDSYA',
+    'PPMSDSYA'
+]
+
+prog_names_short = [
+    'MSc Computing',
+    'MSc Computing and IT Management',
+    'MSc Advanced Computer Science',
+    'MSc Information Security and Privacy',
+    'MSc Computational and Data Journalism',
+    'MSc Data Science and Analytics',
+]
+
 prog_codes_2_prog_name_long = {
     'PFMSCMPA': 'MSc Computing',
     'PFMSCMPB': 'MSc Computing with Placement',
