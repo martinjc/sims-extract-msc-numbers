@@ -56,6 +56,7 @@ def print_full_breakdown_all_statuses(grouped_data):
         print('%s (all): %d' % (prog_name, total))
         print('-----------------------------------------------------')
 
+
 def print_full_breakdown_only_registered(grouped_data):
     for prog_name in prog_names_short:
         prog_codes = prog_name_short_2_prog_codes[prog_name]
@@ -69,6 +70,7 @@ def print_full_breakdown_only_registered(grouped_data):
         print('%s (all): %d' % (prog_name, total))
         print('-----------------------------------------------------')
 
+
 def print_no_breakdown_all_statuses(grouped_data):
     for prog_name in prog_names_short:
         prog_codes = prog_name_short_2_prog_codes[prog_name]
@@ -81,6 +83,7 @@ def print_no_breakdown_all_statuses(grouped_data):
         print('-----------------------------------------------------')
         print('%s (all): %d' % (prog_name, total))
         print('-----------------------------------------------------')
+
 
 def print_no_breakdown_only_registered(grouped_data):
     for prog_name in prog_names_short:
@@ -127,7 +130,7 @@ def create_breakdown_graphic(grouped_data):
 
     ax.set_xticks(list(range(len(prog_codes))))
     ax.set_xticklabels([prog_codes_2_prog_name_long[p] for p in prog_codes], rotation=90)
-    ax.set_ylim(top=30)
+    ax.set_ylim(top=max(bottom)+10)
     ax.legend(loc='upper left', bbox_to_anchor=(0.1, 1.0), framealpha=0.5)
 
     plt.savefig('enrolled_student_status_per_programme_breakdown.png', bbox_inches='tight')
@@ -167,7 +170,7 @@ def create_no_breakdown_graphic(grouped_data):
 
     ax.set_xticks(list(range(len(prog_names_short))))
     ax.set_xticklabels(prog_names_short, rotation=90)
-    ax.set_ylim(top=50)
+    ax.set_ylim(top=max(bottom)+10)
     ax.legend(loc='upper left', bbox_to_anchor=(0.2, 1.0), framealpha=0.5)
 
     plt.savefig('enrolled_student_status_per_programme.png', bbox_inches='tight')
