@@ -188,7 +188,7 @@ def main():
     parser.add_argument('-i', '--input', help='Input file to be analysed', required=True, action='store')
     parser.add_argument('-b', '--breakdown', help='Breakdown by part/time & placement programme', action='store_true')
     parser.add_argument('-r', '--registered', help='show fully registered students only', action='store_true')
-    parser.add_argument('-R', '--registeredandnoid', help='show fully registered students and those who have registered but not collected ID card', action='store_true')
+    parser.add_argument('-l', '--loose', help='show fully registered students and those who have registered but not collected ID card', action='store_true')
     parser.add_argument('-g', '--graphics', help='create visualisations of the data', action='store_true')
     parser.add_argument('-c', '--csv', help='output csv of enrolled status per programme', action='store_true')
     args = parser.parse_args()
@@ -207,10 +207,14 @@ def main():
             print_no_breakdown_all_statuses(grouped)
         elif args.breakdown and not args.registered:
             print_full_breakdown_all_statuses(grouped)
-        elif args.breakdown and args.registered:
+        elif args.breakdown and args.registered and not args.loose:
             print_full_breakdown_only_registered(grouped)
-        elif not args.breakdown and args.registered:
+        elif args.breakdown and args.registered and args.loose:
+            print_full_breakdown_only_registered_and_registered_no_id(grouped)
+        elif not args.breakdown and args.registered and not args.loose:
             print_no_breakdown_only_registered(grouped)
+        elif not args.breakdown and args.registered and args.loose:
+            print_no_breakdown_only_registered_and_registered_no_id(grouped)
 
         if args.graphics and args.breakdown:
             create_breakdown_graphic(grouped)
