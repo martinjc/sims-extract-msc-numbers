@@ -5,6 +5,8 @@ import argparse
 
 import pandas as pd
 
+from lib.programme_data import *
+
 def filter_data(all_data):
     """
     Takes the data from SIMS and removes all students not in
@@ -34,6 +36,12 @@ def filter_students_by_status(all_data, status):
     return all_data.loc[all_data[STATUS_COLUMN] == status]
 
 
+def group_and_count_by_status(all_data):
+    grouped = all_data.groupby(['Course', ' Reg Status']).size()
+    grouped = grouped.sort_index()
+    return grouped
+
+
 def print_registered_status_count(all_data):
     registered_students = filter_students_by_status(all_data, 'Registered')
     print('Registered Students: %s' % registered_students['Student Code'].count())
@@ -41,6 +49,35 @@ def print_registered_status_count(all_data):
     print('Registered - Not Collected ID Card Students: %s' % registered_students['Student Code'].count())
     registered_students = filter_students_by_status(all_data, 'Pending Registration New Entrant')
     print('Pending Registration New Entrant Students: %s' % registered_students['Student Code'].count())
+
+
+def count_by_programme(all_data):
+
+    PROG_COLUMN = 'Course'
+    return all_data[PROG_COLUMN].value_counts()
+
+
+def print_programme_counts(programme_counts):
+    print('Code\t | Title & Count')
+    for p in programme_counts.axes[0]:
+        print('%s | %s: %d' % (p, prog_codes_2_prog_name_long[p], programme_counts[p]))
+
+
+def print_programme_counts_with_title(programme_counts):
+    count_data = {}
+
+    for p_name, p_codes in prog_name_short_2_prog_codes.items():
+        print('-----------------------------------------------------')
+        count = 0
+        for p_code in p_codes:
+            count += programme_counts.get(p_code, 0)
+        print('| %s (all): %d' % (p_name, count))
+        print('-----------------------------------------------------')
+        for p_code in p_codes:
+            name = prog_codes_2_prog_name_long[p_code]
+            count = programme_counts.get(p_code, 0)
+            print(' %s: %d' % (prog_codes_2_prog_name_long[p_code], programme_counts.get(p_code, 0)))
+
 
 def main():
 
@@ -54,14 +91,18 @@ def main():
 
     with open(input_file, 'r') as raw_data_file:
         sims_data = pd.read_csv(raw_data_file, header=6, index_col=False)
-        print(sims_data.count())
 
         # restrict it to this academic year block 1
         filtered_data = filter_data(sims_data)
-        print(filtered_data.count())
 
         print_registered_status_count(filtered_data)
 
+        # counts by programme
+        programme_counts = count_by_programme(filtered_data)
+        print_programme_counts_with_title(programme_counts)
+
+        grouped = group_and_count_by_status(filtered_data)
+        print(grouped)
 
 if __name__ == '__main__':
     main()
