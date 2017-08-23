@@ -25,12 +25,22 @@ def filter_data(all_data):
     return filtered_data
 
 
-def count_students_with_status(all_data, status):
-
+def filter_students_by_status(all_data, status):
+    """
+    Filter the data to all students with a given status
+    """
     # Select all students with the given registration status
     STATUS_COLUMN = ' Reg Status'
     return all_data.loc[all_data[STATUS_COLUMN] == status]
 
+
+def print_registered_status_count(all_data):
+    registered_students = filter_students_by_status(all_data, 'Registered')
+    print('Registered Students: %s' % registered_students['Student Code'].count())
+    registered_students = filter_students_by_status(all_data, 'Registered - Not Collected ID Card')
+    print('Registered - Not Collected ID Card Students: %s' % registered_students['Student Code'].count())
+    registered_students = filter_students_by_status(all_data, 'Pending Registration New Entrant')
+    print('Pending Registration New Entrant Students: %s' % registered_students['Student Code'].count())
 
 def main():
 
@@ -50,12 +60,7 @@ def main():
         filtered_data = filter_data(sims_data)
         print(filtered_data.count())
 
-        registered_students = count_students_with_status(filtered_data, 'Registered')
-        print('Registered Students: %s' % registered_students['Student Code'].count())
-        registered_students = count_students_with_status(filtered_data, 'Registered - Not Collected ID Card')
-        print('Registered - Not Collected ID Card Students: %s' % registered_students['Student Code'].count())
-        registered_students = count_students_with_status(filtered_data, 'Pending Registration New Entrant')
-        print('Pending Registration New Entrant Students: %s' % registered_students['Student Code'].count())
+        print_registered_status_count(filtered_data)
 
 
 if __name__ == '__main__':
