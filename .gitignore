@@ -1,3 +1,8 @@
+# WE NEVER WANT ANY SIMS DATA GETTING ONTO THE INTERNET!
+*.csv
+**/input/*
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
