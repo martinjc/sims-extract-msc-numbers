@@ -41,14 +41,13 @@ def group_and_count_by_status(all_data):
     grouped = grouped.sort_index()
     return grouped
 
-
-def print_full_breakdown_all_statuses(grouped_data):
+def print_full_breakdown(grouped_data, statuses_to_print):
     for prog_name in prog_names_short:
         prog_codes = prog_name_short_2_prog_codes[prog_name]
         total = 0
         for prog_code in prog_codes:
             if prog_code in grouped_data.index:
-                for status in statuses:
+                for status in statuses_to_print:
                     if status in grouped_data.loc[prog_code]:
                         total += grouped_data.loc[prog_code][status]
                         print('%s: %d - %s' % (prog_codes_2_prog_name_long[prog_code], grouped_data.loc[prog_code][status], status))
@@ -57,25 +56,20 @@ def print_full_breakdown_all_statuses(grouped_data):
         print('-----------------------------------------------------')
 
 
+def print_full_breakdown_all_statuses(grouped_data):
+    print_full_breakdown(grouped_data, statuses)
+
 def print_full_breakdown_only_registered(grouped_data):
+    print_full_breakdown(grouped_data, ['Registered'])
+
+def print_full_breakdown_only_registered_and_registered_no_id(grouped_data):
+    print_full_breakdown(grouped_data, ['Registered', 'Registered - Not Collected ID Card'])
+
+def print_no_breakdown(grouped_data, statuses_to_print):
     for prog_name in prog_names_short:
         prog_codes = prog_name_short_2_prog_codes[prog_name]
         total = 0
-        for prog_code in prog_codes:
-            if prog_code in grouped_data.index:
-                if 'Registered' in grouped_data.loc[prog_code]:
-                    total += grouped_data.loc[prog_code]['Registered']
-                    print('%s: %d - %s' % (prog_codes_2_prog_name_long[prog_code], grouped_data.loc[prog_code]['Registered'], 'Registered'))
-        print('-----------------------------------------------------')
-        print('%s (all): %d' % (prog_name, total))
-        print('-----------------------------------------------------')
-
-
-def print_no_breakdown_all_statuses(grouped_data):
-    for prog_name in prog_names_short:
-        prog_codes = prog_name_short_2_prog_codes[prog_name]
-        total = 0
-        for status in statuses:
+        for status in statuses_to_print:
             for prog_code in prog_codes:
                 if prog_code in grouped_data.index:
                     if status in grouped_data.loc[prog_code]:
@@ -84,18 +78,14 @@ def print_no_breakdown_all_statuses(grouped_data):
         print('%s (all): %d' % (prog_name, total))
         print('-----------------------------------------------------')
 
+def print_no_breakdown_all_statuses(grouped_data):
+    print_no_breakdown(grouped_data, statuses)
+
+def print_no_breakdown_only_registered_and_registered_no_id(grouped_data):
+    print_no_breakdown(grouped_data, ['Registered', 'Registered - Not Collected ID Card'])
 
 def print_no_breakdown_only_registered(grouped_data):
-    for prog_name in prog_names_short:
-        prog_codes = prog_name_short_2_prog_codes[prog_name]
-        total = 0
-        for prog_code in prog_codes:
-            if prog_code in grouped_data.index:
-                if 'Registered' in grouped_data.loc[prog_code]:
-                    total += grouped_data.loc[prog_code]['Registered']
-        print('-----------------------------------------------------')
-        print('%s (all): %d' % (prog_name, total))
-        print('-----------------------------------------------------')
+    print_no_breakdown(grouped_data, ['Registered'])
 
 
 def output_csvs(all_data):
@@ -198,6 +188,7 @@ def main():
     parser.add_argument('-i', '--input', help='Input file to be analysed', required=True, action='store')
     parser.add_argument('-b', '--breakdown', help='Breakdown by part/time & placement programme', action='store_true')
     parser.add_argument('-r', '--registered', help='show fully registered students only', action='store_true')
+    parser.add_argument('-R', '--registeredandnoid', help='show fully registered students and those who have registered but not collected ID card', action='store_true')
     parser.add_argument('-g', '--graphics', help='create visualisations of the data', action='store_true')
     parser.add_argument('-c', '--csv', help='output csv of enrolled status per programme', action='store_true')
     args = parser.parse_args()
