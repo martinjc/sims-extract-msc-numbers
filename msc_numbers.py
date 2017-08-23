@@ -29,7 +29,7 @@ def filter_data(all_data):
 
 def filter_students_by_status(all_data, status):
     """
-    Filter the data to all students with a given status
+    Filter the data to all students with the given status
     """
     # Select all students with the given registration status
     STATUS_COLUMN = ' Reg Status'
@@ -37,11 +37,18 @@ def filter_students_by_status(all_data, status):
 
 
 def group_and_count_by_status(all_data):
+    """
+    Group by programme code and registration status and then
+    count how many of each combination there are
+    """
     grouped = all_data.groupby(['Course', ' Reg Status']).size()
     grouped = grouped.sort_index()
     return grouped
 
 def print_full_breakdown(grouped_data, statuses_to_print):
+    """
+    Dump a count of each programme and status to command line
+    """
     for prog_name in prog_names_short:
         prog_codes = prog_name_short_2_prog_codes[prog_name]
         total = 0
@@ -66,6 +73,10 @@ def print_full_breakdown_only_registered_and_registered_no_id(grouped_data):
     print_full_breakdown(grouped_data, ['Registered', 'Registered - Not Collected ID Card'])
 
 def print_no_breakdown(grouped_data, statuses_to_print):
+    """
+    Dump a count of each programme (grouped by 'real' programme)
+    and status to command line
+    """
     for prog_name in prog_names_short:
         prog_codes = prog_name_short_2_prog_codes[prog_name]
         total = 0
@@ -89,6 +100,10 @@ def print_no_breakdown_only_registered(grouped_data):
 
 
 def output_csvs(all_data):
+    """
+    Write out csv files containing the registration status counts for
+    each programme code and also grouped by course title
+    """
     grouped = all_data.groupby('Course')[' Reg Status'].value_counts()
 
     csv_data = grouped.unstack(fill_value=0)
