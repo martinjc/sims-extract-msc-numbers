@@ -53,3 +53,11 @@ advanced = ['PFMSADSA', 'PFMSADSB', 'PPMSADSA']
 compj = ['PFMSCOJA', 'PFMSCDJA']
 datasci = ['PFMSDSYA', 'PPMSDSYA']
 infsec = ['PFMSISPA', 'PPMSISPA']
+
+statuses = [
+    'Registered',
+    'Registered - Not Collected ID Card',
+    'Pending Registration New Entrant',
+    'Pending Registration',
+    'Absent'
+]
