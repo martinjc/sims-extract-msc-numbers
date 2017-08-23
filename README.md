@@ -10,7 +10,7 @@ By default it will report the number of students on each programme, including al
 It takes one required argument '-i INPUT', the name of the `.csv` file output by SIMS.
 
 
-
+```
 usage: msc_numbers.py [-h] -i INPUT [-b] [-r] [-g] [-c]
 
 
@@ -30,3 +30,4 @@ optional arguments:
   -g, --graphics        create visualisations of the data
 
   -c, --csv             output csv of enrolled status per programme
+```
