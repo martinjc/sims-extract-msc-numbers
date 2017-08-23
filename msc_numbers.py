@@ -188,7 +188,7 @@ def main():
     parser.add_argument('-i', '--input', help='Input file to be analysed', required=True, action='store')
     parser.add_argument('-b', '--breakdown', help='Breakdown by part/time & placement programme', action='store_true')
     parser.add_argument('-r', '--registered', help='show fully registered students only', action='store_true')
-    parser.add_argument('-l', '--loose', help='show fully registered students and those who have registered but not collected ID card', action='store_true')
+    parser.add_argument('-l', '--loose', help='show fully registered students and those who have registered but not collected ID card (if -r also provided)', action='store_true')
     parser.add_argument('-g', '--graphics', help='create visualisations of the data', action='store_true')
     parser.add_argument('-c', '--csv', help='output csv of enrolled status per programme', action='store_true')
     args = parser.parse_args()

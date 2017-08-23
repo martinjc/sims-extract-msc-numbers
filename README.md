@@ -26,7 +26,7 @@ optional arguments:
   -b, --breakdown       Breakdown by part/time & placement programme
   -r, --registered      show fully registered students only
   -l, --loose           show fully registered students and those who have
-                        registered but not collected ID card
+                        registered but not collected ID card  (if -r also provided)
   -g, --graphics        create visualisations of the data
   -c, --csv             output csv of enrolled status per programme
 ```
