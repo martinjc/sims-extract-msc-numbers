@@ -42,6 +42,58 @@ def group_and_count_by_status(all_data):
     return grouped
 
 
+def print_full_breakdown_all_statuses(grouped_data):
+    for prog_name in prog_names_short:
+        prog_codes = prog_name_short_2_prog_codes[prog_name]
+        total = 0
+        for prog_code in prog_codes:
+            if prog_code in grouped_data.index:
+                for status in statuses:
+                    if status in grouped_data.loc[prog_code]:
+                        total += grouped_data.loc[prog_code][status]
+                        print('%s: %d - %s' % (prog_codes_2_prog_name_long[prog_code], grouped_data.loc[prog_code][status], status))
+        print('-----------------------------------------------------')
+        print('%s (all): %d' % (prog_name, total))
+        print('-----------------------------------------------------')
+
+def print_full_breakdown_only_registered(grouped_data):
+    for prog_name in prog_names_short:
+        prog_codes = prog_name_short_2_prog_codes[prog_name]
+        total = 0
+        for prog_code in prog_codes:
+            if prog_code in grouped_data.index:
+                if 'Registered' in grouped_data.loc[prog_code]:
+                    total += grouped_data.loc[prog_code]['Registered']
+                    print('%s: %d - %s' % (prog_codes_2_prog_name_long[prog_code], grouped_data.loc[prog_code]['Registered'], 'Registered'))
+        print('-----------------------------------------------------')
+        print('%s (all): %d' % (prog_name, total))
+        print('-----------------------------------------------------')
+
+def print_no_breakdown_all_statuses(grouped_data):
+    for prog_name in prog_names_short:
+        prog_codes = prog_name_short_2_prog_codes[prog_name]
+        total = 0
+        for status in statuses:
+            for prog_code in prog_codes:
+                if prog_code in grouped_data.index:
+                    if status in grouped_data.loc[prog_code]:
+                        total += grouped_data.loc[prog_code][status]
+        print('-----------------------------------------------------')
+        print('%s (all): %d' % (prog_name, total))
+        print('-----------------------------------------------------')
+
+def print_no_breakdown_only_registered(grouped_data):
+    for prog_name in prog_names_short:
+        prog_codes = prog_name_short_2_prog_codes[prog_name]
+        total = 0
+        for prog_code in prog_codes:
+            if prog_code in grouped_data.index:
+                if 'Registered' in grouped_data.loc[prog_code]:
+                    total += grouped_data.loc[prog_code]['Registered']
+        print('-----------------------------------------------------')
+        print('%s (all): %d' % (prog_name, total))
+        print('-----------------------------------------------------')
+
 def print_registered_status_count(all_data):
     registered_students = filter_students_by_status(all_data, 'Registered')
     print('Registered Students: %s' % registered_students['Student Code'].count())
@@ -84,6 +136,8 @@ def main():
     # read in filename as command line argument
     parser = argparse.ArgumentParser(description='Analysing MSc numbers in SIMS')
     parser.add_argument('-i', '--input', help='Input file to be analysed', required=True, action='store')
+    parser.add_argument('-b', '--breakdown', help='Breakdown by part/time & placement programme', action='store_true')
+    parser.add_argument('-r', '--registered', help='show fully registered students only', action='store_true')
     args = parser.parse_args()
 
     # open and read the input file
@@ -94,15 +148,17 @@ def main():
 
         # restrict it to this academic year block 1
         filtered_data = filter_data(sims_data)
-
-        print_registered_status_count(filtered_data)
-
-        # counts by programme
-        programme_counts = count_by_programme(filtered_data)
-        print_programme_counts_with_title(programme_counts)
-
         grouped = group_and_count_by_status(filtered_data)
-        print(grouped)
+
+        if not args.breakdown and not args.registered:
+            print_no_breakdown_all_statuses(grouped)
+        elif args.breakdown and not args.registered:
+            print_full_breakdown_all_statuses(grouped)
+        elif args.breakdown and args.registered:
+            print_full_breakdown_only_registered(grouped)
+        elif not args.breakdown and args.registered:
+            print_no_breakdown_only_registered(grouped)
+
 
 if __name__ == '__main__':
     main()
