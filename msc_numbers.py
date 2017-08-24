@@ -212,7 +212,7 @@ def main():
     input_file = os.path.join(os.getcwd(), args.input)
 
     with open(input_file, 'r') as raw_data_file:
-        sims_data = pd.read_csv(raw_data_file, header=6, index_col=False)
+        sims_data = pd.read_csv(raw_data_file, header=5, index_col=False)
 
         # restrict it to this academic year block 1
         filtered_data = filter_data(sims_data)
