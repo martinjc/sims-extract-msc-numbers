@@ -16,13 +16,13 @@ def filter_data(all_data):
     doing a dissertation (block D1/D2) or repeating something (block 2)
     """
     # Remove all students not from this academic year
-    YEAR_COLUMN = 'Acad Year'
-    THIS_YEAR = '2017/8'
-    filtered_data = all_data.loc[all_data[YEAR_COLUMN] == THIS_YEAR]
+    # YEAR_COLUMN = 'Acad Year'
+    # THIS_YEAR = '2017/8'
+    # filtered_data = all_data.loc[all_data[YEAR_COLUMN] == THIS_YEAR]
 
     # Remove all students not currently in block 1 (so those doing placement or dissertation)
-    BLOCK_COLUMN = 'Block'
-    filtered_data = filtered_data.loc[filtered_data[BLOCK_COLUMN] == '1']
+    BLOCK_COLUMN = 'Blok'
+    filtered_data = all_data.loc[all_data[BLOCK_COLUMN] == '1']
 
     return filtered_data
 
@@ -32,7 +32,7 @@ def filter_students_by_status(all_data, status):
     Filter the data to all students with the given status
     """
     # Select all students with the given registration status
-    STATUS_COLUMN = ' Reg Status'
+    STATUS_COLUMN = ' Registration Status'
     return all_data.loc[all_data[STATUS_COLUMN] == status]
 
 
@@ -41,7 +41,7 @@ def group_and_count_by_status(all_data):
     Group by programme code and registration status and then
     count how many of each combination there are
     """
-    grouped = all_data.groupby(['Course', ' Reg Status']).size()
+    grouped = all_data.groupby(['Prog', 'Registration Status']).size()
     grouped = grouped.sort_index()
     return grouped
 
@@ -104,17 +104,17 @@ def output_csvs(all_data):
     Write out csv files containing the registration status counts for
     each programme code and also grouped by course title
     """
-    grouped = all_data.groupby('Course')[' Reg Status'].value_counts()
+    grouped = all_data.groupby('Prog')['Registration Status'].value_counts()
 
     csv_data = grouped.unstack(fill_value=0)
     breakdown_data = csv_data.rename(prog_codes_2_prog_name_long)
 
-    with open('enrolled_student_status_per_programme_breakdown.csv', 'w') as output_file:
+    with open('enrolled_student_status_per_programme_breakdown_from_ecops.csv', 'w') as output_file:
         breakdown_data.to_csv(output_file)
 
     no_breakdown_data = csv_data.groupby(prog_codes_2_prog_name_short).sum()
 
-    with open('enrolled_student_status_per_programme.csv', 'w') as output_file:
+    with open('enrolled_student_status_per_programme_from_ecops.csv', 'w') as output_file:
         no_breakdown_data.to_csv(output_file)
 
 
@@ -153,7 +153,7 @@ def create_breakdown_graphic(grouped_data):
     ax.set_ylim(top=max(bottom)+10)
     ax.legend(loc='upper left', bbox_to_anchor=(0.1, 1.0), framealpha=0.5)
 
-    plt.savefig('enrolled_student_status_per_programme_breakdown.png', bbox_inches='tight')
+    plt.savefig('enrolled_student_status_per_programme_breakdown_from_ecops.png', bbox_inches='tight')
 
 
 def create_no_breakdown_graphic(grouped_data):
@@ -193,7 +193,7 @@ def create_no_breakdown_graphic(grouped_data):
     ax.set_ylim(top=max(bottom)+10)
     ax.legend(loc='upper left', bbox_to_anchor=(0.2, 1.0), framealpha=0.5)
 
-    plt.savefig('enrolled_student_status_per_programme.png', bbox_inches='tight')
+    plt.savefig('enrolled_student_status_per_programme_from_ecops.png', bbox_inches='tight')
 
 
 def main():
@@ -212,7 +212,7 @@ def main():
     input_file = os.path.join(os.getcwd(), args.input)
 
     with open(input_file, 'r') as raw_data_file:
-        sims_data = pd.read_csv(raw_data_file, header=5, index_col=False)
+        sims_data = pd.read_csv(raw_data_file, header=6, index_col=False)
 
         # restrict it to this academic year block 1
         filtered_data = filter_data(sims_data)
