@@ -42,4 +42,4 @@ optional arguments:
 
 So, for example, to generate a breakdown of all statuses for all students on all programmes in COMSC (including joint programmes), creating both graphical and csv results, export the list of students on a programme from SIMS with the above parameters and run:
 
-`python msc_numbers_from_LOSOP.py i Students_on_Programme.csv -l -r -b -g -c`
+`python msc_numbers_from_LOSOP.py -i Students_on_Programme.csv -l -r -b -g -c`
