@@ -1,7 +1,6 @@
 # WE NEVER WANT ANY SIMS DATA GETTING ONTO THE INTERNET!
 *.csv
 input/*
-*.png
 
 
 # Byte-compiled / optimized / DLL files
