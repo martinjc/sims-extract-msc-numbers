@@ -107,6 +107,7 @@ def output_csvs(all_data):
     grouped = all_data.groupby('Course')[' Reg Status'].value_counts()
 
     csv_data = grouped.unstack(fill_value=0)
+    csv_data = csv_data.reindex(prog_codes, fill_value=0)
     breakdown_data = csv_data.rename(prog_codes_2_prog_name_long)
 
     with open('enrolled_student_status_per_programme_breakdown_from_losop.csv', 'w') as output_file:
