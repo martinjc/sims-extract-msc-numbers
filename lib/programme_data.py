@@ -16,7 +16,8 @@ prog_codes = [
     'PFMSCOJA',
     'PFMSCDJA',
     'PFMSDSYA',
-    'PPMSDSYA'
+    'PPMSDSYA',
+    'PFMSSENA'
 ]
 
 prog_names_short = [
@@ -26,6 +27,7 @@ prog_names_short = [
     'MSc Information Security and Privacy',
     'MSc Computational and Data Journalism',
     'MSc Data Science and Analytics',
+    'MSc Software Engineering'
 ]
 
 prog_codes_2_prog_name_long = {
@@ -44,6 +46,7 @@ prog_codes_2_prog_name_long = {
     'PFMSCDJA': 'MSc Computational and Data Journalism',
     'PFMSDSYA': 'MSc Data Science and Analytics',
     'PPMSDSYA': 'MSc Data Science and Analytics (Part Time)',
+    'PFMSSENA': 'MSc Software Engineering'
 }
 
 prog_codes_2_prog_name_short = {
@@ -62,6 +65,7 @@ prog_codes_2_prog_name_short = {
     'PFMSCDJA': 'MSc Computational and Data Journalism',
     'PFMSDSYA': 'MSc Data Science and Analytics',
     'PPMSDSYA': 'MSc Data Science and Analytics',
+    'PFMSSENA': 'MSc Software Engineering'
 }
 
 prog_name_short_2_prog_codes = {
@@ -70,7 +74,8 @@ prog_name_short_2_prog_codes = {
     'MSc Advanced Computer Science': ['PFMSADSA', 'PFMSADSB', 'PPMSADSA'],
     'MSc Information Security and Privacy' : ['PFMSISPA', 'PPMSISPA'],
     'MSc Computational and Data Journalism': ['PFMSCOJA', 'PFMSCDJA'],
-    'MSc Data Science and Analytics': ['PFMSDSYA', 'PPMSDSYA']
+    'MSc Data Science and Analytics': ['PFMSDSYA', 'PPMSDSYA'],
+    'MSc Software Engineering': ['PFMSSENA']
 }
 
 
@@ -80,6 +85,7 @@ advanced = ['PFMSADSA', 'PFMSADSB', 'PPMSADSA']
 compj = ['PFMSCOJA', 'PFMSCDJA']
 datasci = ['PFMSDSYA', 'PPMSDSYA']
 infsec = ['PFMSISPA', 'PPMSISPA']
+softeng = ['PFMSSENA']
 
 statuses = [
     'Registered',
@@ -87,4 +93,8 @@ statuses = [
     'Pending Registration New Entrant',
     'Pending Registration',
     'Absent'
+]
+
+application_statuses = [
+    'C', 'CF', 'UF', 'R', 'U', 'CD', 'CFUF', 'UD'
 ]
