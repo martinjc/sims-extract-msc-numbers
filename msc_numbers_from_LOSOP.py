@@ -64,7 +64,7 @@ def print_full_breakdown(grouped_data, statuses_to_print):
 
 
 def print_full_breakdown_all_statuses(grouped_data):
-    print_full_breakdown(grouped_data, statuses)
+    print_full_breakdown(grouped_data, enrolment_statuses)
 
 def print_full_breakdown_only_registered(grouped_data):
     print_full_breakdown(grouped_data, ['Registered'])
@@ -90,7 +90,7 @@ def print_no_breakdown(grouped_data, statuses_to_print):
         print('-----------------------------------------------------')
 
 def print_no_breakdown_all_statuses(grouped_data):
-    print_no_breakdown(grouped_data, statuses)
+    print_no_breakdown(grouped_data, enrolment_statuses)
 
 def print_no_breakdown_only_registered_and_registered_no_id(grouped_data):
     print_no_breakdown(grouped_data, ['Registered', 'Registered - Not Collected ID Card'])
@@ -131,7 +131,7 @@ def create_breakdown_graphic(grouped_data):
     index = list(range(len(prog_codes)))
 
     data = {}
-    for status in statuses:
+    for status in enrolment_statuses:
         data[status] = []
         for prog_code in prog_codes:
             if prog_code in grouped_data.index:
@@ -145,7 +145,7 @@ def create_breakdown_graphic(grouped_data):
     fig, ax = plt.subplots()
     bottom = [0]*len(prog_codes)
 
-    for i, status in enumerate(statuses):
+    for i, status in enumerate(enrolment_statuses):
         ax.bar(index, data[status], label=status, bottom=bottom)
         bottom = [sum(v) for v in zip(bottom, data[status])]
 
@@ -169,7 +169,7 @@ def create_no_breakdown_graphic(grouped_data):
     index = list(range(len(prog_names_short)))
 
     data = {}
-    for status in statuses:
+    for status in enrolment_statuses:
 
         data[status] = []
 
@@ -185,7 +185,7 @@ def create_no_breakdown_graphic(grouped_data):
     fig, ax = plt.subplots()
     bottom = [0]*len(prog_names_short)
 
-    for i, status in enumerate(statuses):
+    for i, status in enumerate(enrolment_statuses):
         ax.bar(index, data[status], label=status, bottom=bottom)
         bottom = [sum(v) for v in zip(bottom, data[status])]
 

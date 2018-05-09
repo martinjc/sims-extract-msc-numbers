@@ -87,7 +87,7 @@ datasci = ['PFMSDSYA', 'PPMSDSYA']
 infsec = ['PFMSISPA', 'PPMSISPA']
 softeng = ['PFMSSENA']
 
-statuses = [
+enrolment_statuses = [
     'Registered',
     'Registered - Not Collected ID Card',
     'Pending Registration New Entrant',
